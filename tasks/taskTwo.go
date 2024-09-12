@@ -47,7 +47,6 @@ func TaskTwo() {
 		return
 	}
 	fmt.Println(string(jsonData))
-
 }
 
 func utilFunc() typesstruct.Todo {
