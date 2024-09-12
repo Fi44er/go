@@ -47,15 +47,19 @@ func TaskThre() {
 func utilFunc2() {
 	url := "https://jsonplaceholder.typicode.com/comments?_limit=3"
 	data := utils.GetMock[typesstruct.Todo](url)
+	var todoWithEmotion []TodoWithEmotion
+
 	for _, object := range data {
 		emotion := EMOTIONS[rand.Intn(len(EMOTIONS))]
-		todoWithEmotion := TodoWithEmotion{Todo: object, Emotion: emotion}
-		jsonData, err := json.MarshalIndent(todoWithEmotion, "", "  ")
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		fmt.Println(string(jsonData))
+		test := TodoWithEmotion{Todo: object, Emotion: emotion}
+		todoWithEmotion = append(todoWithEmotion, test)
 	}
+
+	jsonData, err := json.MarshalIndent(todoWithEmotion, "", "  ")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(jsonData))
 
 }
