@@ -3,5 +3,7 @@ package main
 import "root/tasks"
 
 func main() {
-	tasks.TaskTwo()
+	// tasks.TaskOne()
+	// tasks.TaskTwo()
+	tasks.TaskThre()
 }

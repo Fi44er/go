@@ -3,7 +3,6 @@ package tasks
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"root/utils"
 	"sync"
 )
@@ -30,20 +29,7 @@ func TaskOne() {
 	for url, _ := range utils.Countdown(urls) {
 		go func(url string) {
 			defer wg.Done()
-
-			res, err := http.Get(url)
-			if err != nil {
-				panic(err)
-			}
-			defer res.Body.Close()
-
-			var data []map[string]interface{}
-			err = json.NewDecoder(res.Body).Decode(&data)
-			if err != nil {
-				fmt.Println(err)
-				return
-			}
-
+			data := utils.GetMock[map[string]interface{}](url)
 			mu.Lock()
 			result <- data
 			mu.Unlock()

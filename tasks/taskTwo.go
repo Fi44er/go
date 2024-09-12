@@ -3,28 +3,20 @@ package tasks
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"math/rand"
-	"net/http"
+	"root/typesstruct"
+	"root/utils"
 	"sync"
 )
 
-type Todo struct {
-	PostId int    `json:"postId"`
-	Id     int    `json:"id"`
-	Name   string `json:"name"`
-	Email  string `json:"email"`
-	Body   string `json:"body"`
-}
-
 func TaskTwo() {
-	todos := make(chan Todo)
+	todos := make(chan typesstruct.Todo)
 	pause := make(chan struct{})
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	wg.Add(2)
 
-	var result []Todo
+	var result []typesstruct.Todo
 
 	go func(countUrls int) {
 		defer wg.Done()
@@ -58,24 +50,14 @@ func TaskTwo() {
 
 }
 
-func utilFunc() Todo {
+func utilFunc() typesstruct.Todo {
 	randomId := rand.Intn(500)
 	url := fmt.Sprintf("https://jsonplaceholder.typicode.com/comments?id=%d", randomId)
-	// fmt.Print(url)
-	res, err := http.Get(url)
-	if err != nil {
-		panic(err)
-	}
-	var data []Todo
-	err = json.NewDecoder(res.Body).Decode(&data)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer res.Body.Close()
+	data := utils.GetMock[typesstruct.Todo](url)
 	return data[0]
 }
 
-func binarySearchAndInsert(arr *[]Todo, target Todo) {
+func binarySearchAndInsert(arr *[]typesstruct.Todo, target typesstruct.Todo) {
 	low, high := 0, len(*arr)-1
 	for low <= high {
 		mid := (low + (high-low)/2)
@@ -88,5 +70,5 @@ func binarySearchAndInsert(arr *[]Todo, target Todo) {
 			low = mid + 1
 		}
 	}
-	*arr = append((*arr)[:low], append([]Todo{target}, (*arr)[low:]...)...)
+	*arr = append((*arr)[:low], append([]typesstruct.Todo{target}, (*arr)[low:]...)...)
 }
